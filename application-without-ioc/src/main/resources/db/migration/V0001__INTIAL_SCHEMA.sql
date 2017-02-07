@@ -4,7 +4,7 @@ CREATE SEQUENCE username_seq;
 
 CREATE TABLE usernames (
 	id INTEGER DEFAULT username_seq.nextval PRIMARY KEY,
-	name VARCHAR(255) CONSTRAINT usernames_name_nn NOT NULL,
+	name VARCHAR(255) CONSTRAINT usernames_name_nn NOT NULL
 );
 
 CREATE SEQUENCE micro_message_seq;
