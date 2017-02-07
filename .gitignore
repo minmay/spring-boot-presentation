@@ -1,3 +1,5 @@
+#IntelliJ artifacts
 *.ipr
 *.iws
 *.iml
+*.ids
