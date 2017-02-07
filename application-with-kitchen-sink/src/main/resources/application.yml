@@ -1,0 +1,32 @@
+# The name of this application.
+info.app.name: "Kitchen Sink"
+
+# Path of the main dispatcher servlet.
+server.servlet-path: "/system"
+
+# Enable security for the actuator endpoints
+management.security.enabled: false
+
+# Enables pretty print of JSON
+spring.jackson.serialization.indent_output: true
+
+spring.datasource:
+  # JDBC url of the database.
+  url: jdbc:postgres0ql://localhost:5432/lajug
+  # Login username of the database.
+  username: lajug
+  # Login password of the database.
+  password:
+  # Fully qualified name of the JDBC driver. Auto-detected based on the URL by default.
+  driver-class-name: org.postgresql.Driver
+
+spring:
+  rabbitmq:
+    # RabbitMQ login user to authenticate to the broker.
+    username: guest
+    # RabbitMQ login to authenticate against the broker.
+    password: guest
+
+spring.data.cassandra:
+  # Cassandra eyspace name to use.
+  keyspace-name: lajug
