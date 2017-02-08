@@ -12,6 +12,7 @@ import mvillalobos.presentations.spring.boot.kitchen.api.repositories.MongoDbMes
 import mvillalobos.presentations.spring.boot.kitchen.api.repositories.PostgresMessageRepository;
 import mvillalobos.presentations.spring.boot.kitchen.api.repositories.RedisMessagesRepository;
 import mvillalobos.presentations.spring.boot.kitchen.api.services.MessageService;
+import mvillalobos.presentations.spring.boot.kitchen.implementation.configurations.QueueConfiguration;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,19 +32,25 @@ public class MessagesServiceImpl implements MessageService {
 
 	private final ObjectMapper objectMapper;
 
+	private final QueueConfiguration queueConfiguration;
+
 	@Autowired
 	public MessagesServiceImpl(
 			CassandraMessagesRepository cassandraMessagesRepository,
 			MongoDbMessagesRepository mongoDbMessagesRepository,
 			PostgresMessageRepository postgresMessageRepository,
 			RedisMessagesRepository redisMessagesRepository,
-			RabbitTemplate rabbitTemplate, ObjectMapper objectMapper) {
+			RabbitTemplate rabbitTemplate,
+			ObjectMapper objectMapper,
+			QueueConfiguration queueConfiguration
+	) {
 		this.cassandraMessagesRepository = cassandraMessagesRepository;
 		this.mongoDbMessagesRepository = mongoDbMessagesRepository;
 		this.postgresMessageRepository = postgresMessageRepository;
 		this.redisMessagesRepository = redisMessagesRepository;
 		this.rabbitTemplate = rabbitTemplate;
 		this.objectMapper = objectMapper;
+		this.queueConfiguration = queueConfiguration;
 	}
 
 	@Override
@@ -74,7 +81,7 @@ public class MessagesServiceImpl implements MessageService {
 
 			final Message response = new Message(id, message);
 
-			rabbitTemplate.convertAndSend("lajug", objectMapper.writeValueAsBytes(response));
+			rabbitTemplate.convertAndSend(queueConfiguration.getQueue(), objectMapper.writeValueAsBytes(response));
 
 
 			return response;
